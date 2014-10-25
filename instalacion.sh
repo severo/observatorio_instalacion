@@ -36,8 +36,10 @@ fi
 # Pre-requisitos
 
 # Instalación de composer
-if -n which composer >/dev/null 2>&1
+if [ -e $(which composer) ]
 then
+  printf "Composer ya esta instalado\n"
+else
   printf "Instalación de composer\n"
   cd ~
   curl -sS https://getcomposer.org/installer | php
