@@ -43,9 +43,9 @@ sudo service apache2 restart
 
 # Vaciar la base de datos
 printf "Creación de la base de datos '%s' y del usuario '%s'\n" "${DR_DB_NAME}" "${DR_DB_USER}"
-mysql --defaults-file=/etc/mysql/debian.cnf -se "DROP DATABASE IF EXISTS ${DR_DB_NAME};"
-mysql --defaults-file=/etc/mysql/debian.cnf -se "CREATE DATABASE ${DR_DB_NAME};"
-mysql --defaults-file=/etc/mysql/debian.cnf -se "GRANT ALL PRIVILEGES ON ${DR_DB_NAME}.* TO '${DR_DB_USER}'@'${DR_DB_HOST}' IDENTIFIED BY '${DR_DB_PW}';"
+sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "DROP DATABASE IF EXISTS ${DR_DB_NAME};"
+sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "CREATE DATABASE ${DR_DB_NAME};"
+sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "GRANT ALL PRIVILEGES ON ${DR_DB_NAME}.* TO '${DR_DB_USER}'@'${DR_DB_HOST}' IDENTIFIED BY '${DR_DB_PW}';"
 
 # Instalación
 printf "Instalación de Drupal '%s' en la carpeta '%s'\n" "${DR_VERSION}" "${CARPETA_INSTALACION}"
