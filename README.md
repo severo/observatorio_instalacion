@@ -20,13 +20,14 @@ composer global require drush/drush:6.*
 Post-install:
 * añadir el acceso al binario `drush` en `$PATH`
 
-```
-sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' $HOME/.bashrc
-source $HOME/.bashrc
-```
+	```
+	sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' $HOME/.bashrc
+	source $HOME/.bashrc
+	```
 
 * activar la compleción para el comando `drush`
 
-```
-curl -sS https://raw.githubusercontent.com/drush-ops/drush/master/drush.complete.sh | sudo tee /etc/bash_completion.d/drush.complete.sh > /dev/null
-```
+	```
+	curl -sS https://raw.githubusercontent.com/drush-ops/drush/master/drush.complete.sh | sudo tee /etc/bash_completion.d/drush.complete.sh > /dev/null
+	```
+
