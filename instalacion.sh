@@ -21,9 +21,6 @@ DR_DB_PORT=3306
 DR_DB_NAME=observatorio
 DR_DB_URL=mysql://${DR_DB_USER}:${DR_DB_PW}@${DR_DB_HOST}:${DR_DB_PORT}/${DR_DB_NAME}
 
-MYSQL_USER=root
-MYSQL_PW=abc
-
 DR_ACCOUNT_NAME=severo
 DR_ACCOUNT_PASS=severo
 DR_ACCOUNT_MAIL=severo@rednegra.net
@@ -46,9 +43,9 @@ sudo service apache2 restart
 
 # Vaciar la base de datos
 printf "Creación de la base de datos '%s' y del usuario '%s'\n" "${DR_DB_NAME}" "${DR_DB_USER}"
-mysql --user=${MYSQL_USER} --password=${MYSQL_PW} -e "DROP DATABASE IF EXISTS ${DR_DB_NAME};"
-mysql --user=${MYSQL_USER} --password=${MYSQL_PW} -e "CREATE DATABASE ${DR_DB_NAME};"
-mysql --user=${MYSQL_USER} --password=${MYSQL_PW} -e "GRANT ALL PRIVILEGES ON ${DR_DB_NAME}.* TO '${DR_DB_USER}'@'${DR_DB_HOST}' IDENTIFIED BY '${DR_DB_PW}';"
+mysql --defaults-file=/etc/mysql/debian.cnf -se "DROP DATABASE IF EXISTS ${DR_DB_NAME};"
+mysql --defaults-file=/etc/mysql/debian.cnf -se "CREATE DATABASE ${DR_DB_NAME};"
+mysql --defaults-file=/etc/mysql/debian.cnf -se "GRANT ALL PRIVILEGES ON ${DR_DB_NAME}.* TO '${DR_DB_USER}'@'${DR_DB_HOST}' IDENTIFIED BY '${DR_DB_PW}';"
 
 # Instalación
 printf "Instalación de Drupal '%s' en la carpeta '%s'\n" "${DR_VERSION}" "${CARPETA_INSTALACION}"

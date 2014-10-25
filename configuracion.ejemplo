@@ -18,9 +18,6 @@ DR_DB_PORT=3306
 DR_DB_NAME=observatorio
 DR_DB_URL=mysql://${DR_DB_USER}:${DR_DB_PW}@${DR_DB_HOST}:${DR_DB_PORT}/${DR_DB_NAME}
 
-MYSQL_USER=root
-MYSQL_PW=abc
-
 DR_ACCOUNT_NAME=severo
 DR_ACCOUNT_PASS=severo
 DR_ACCOUNT_MAIL=severo@rednegra.net
