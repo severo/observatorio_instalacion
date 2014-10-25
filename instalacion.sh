@@ -36,7 +36,7 @@ fi
 # Pre-requisitos
 
 # Instalación de composer
-if [ -e $(which composer) ]
+if $(command -v composer >/dev/null 2>&1)
 then
   printf "Composer ya esta instalado\n"
 else
@@ -44,6 +44,19 @@ else
   cd ~
   curl -sS https://getcomposer.org/installer | php
   sudo mv composer.phar /usr/local/bin/composer
+  sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' $HOME/.bashrc
+  source $HOME/.bashrc
+fi
+
+# Instalación de drush
+if $(command -v drush >/dev/null 2>&1)
+then
+  printf "Drush ya esta instalado\n"
+else
+  printf "Instalación de drush\n"
+  cd ~
+  composer global require drush/drush:6.*cd ~
+  curl -sS https://raw.githubusercontent.com/drush-ops/drush/master/drush.complete.sh | sudo tee /etc/bash_completion.d/drush.complete.sh > /dev/null
 fi
 
 #printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
