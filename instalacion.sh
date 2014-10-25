@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Configuración
+PAQUETES=php5-gd
 
-
-#PAQUETES=sqlite3
 URL_HOST=localhost
 URL_SUBDIR=observatorio
 URL=http://${URL_HOST}/${URL_SUBDIR}
@@ -59,8 +58,8 @@ else
   curl -sS https://raw.githubusercontent.com/drush-ops/drush/master/drush.complete.sh | sudo tee /etc/bash_completion.d/drush.complete.sh > /dev/null
 fi
 
-#printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
-#sudo aptitude install ${PAQUETES}
+printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
+sudo aptitude install ${PAQUETES}
 
 sudo a2enmod rewrite
 sudo service apache2 restart
