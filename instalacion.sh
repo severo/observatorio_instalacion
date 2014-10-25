@@ -35,6 +35,15 @@ fi
 
 # Pre-requisitos
 
+# Instalación de composer
+if -n which composer >/dev/null 2>&1
+then
+  printf "Instalación de composer\n"
+  cd ~
+  curl -sS https://getcomposer.org/installer | php
+  sudo mv composer.phar /usr/local/bin/composer
+fi
+
 #printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
 #sudo aptitude install ${PAQUETES}
 
