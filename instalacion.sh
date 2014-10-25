@@ -55,7 +55,7 @@ then
 else
   printf "Instalación de drush\n"
   cd ~
-  composer global require drush/drush:6.*cd ~
+  composer global require drush/drush:6.*
   curl -sS https://raw.githubusercontent.com/drush-ops/drush/master/drush.complete.sh | sudo tee /etc/bash_completion.d/drush.complete.sh > /dev/null
 fi
 
