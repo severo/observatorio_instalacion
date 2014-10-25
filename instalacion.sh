@@ -5,7 +5,6 @@ PAQUETES=php5-gd
 
 URL_HOST=localhost
 URL_SUBDIR=observatorio
-URL=http://${URL_HOST}/${URL_SUBDIR}
 
 APACHE_USER=www-data
 
@@ -18,7 +17,6 @@ DR_DB_PW=observatorio
 DR_DB_HOST=localhost
 DR_DB_PORT=3306
 DR_DB_NAME=observatorio
-DR_DB_URL=mysql://${DR_DB_USER}:${DR_DB_PW}@${DR_DB_HOST}:${DR_DB_PORT}/${DR_DB_NAME}
 
 DR_ACCOUNT_NAME=severo
 DR_ACCOUNT_PASS=severo
@@ -26,11 +24,14 @@ DR_ACCOUNT_MAIL=severo@rednegra.net
 DR_LOCALE=es_BO
 DR_SITE_MAIL=severo@rednegra.net
 DR_SITE_NAME="Observatorio del racismo"
-DR_SITES_SUBDIR=${URL_HOST}.${URL_SUBDIR//\//.}
 
 if [ -f ./configuracion ] ; then
         . ./configuracion
 fi
+
+DR_DB_URL=mysql://${DR_DB_USER}:${DR_DB_PW}@${DR_DB_HOST}:${DR_DB_PORT}/${DR_DB_NAME}
+URL=http://${URL_HOST}/${URL_SUBDIR}
+DR_SITES_SUBDIR=${URL_HOST}.${URL_SUBDIR//\//.}
 
 # Pre-requisitos
 
