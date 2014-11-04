@@ -1,0 +1,23 @@
+#PAQUETES=php5-gd
+
+URL_HOST=localhost
+URL_SUBDIR=www/observatorio
+
+#APACHE_USER=www-data
+
+#TMP=/tmp
+CARPETA_INSTALACION=/home/slesage/www/observatorio
+#SPIP_VERSION=drupal-7.32
+
+#SPIP_DB_USER=observatorio
+#SPIP_DB_PW=observatorio
+#SPIP_DB_HOST=localhost
+#SPIP_DB_PORT=3306
+#SPIP_DB_NAME=observatorio
+
+#SPIP_ACCOUNT_NAME=severo
+#SPIP_ACCOUNT_PASS=severo
+#SPIP_ACCOUNT_MAIL=severo@rednegra.net
+#SPIP_LOCALE=es_BO
+#SPIP_SITE_MAIL=severo@rednegra.net
+#SPIP_SITE_NAME="Observatorio del racismo"

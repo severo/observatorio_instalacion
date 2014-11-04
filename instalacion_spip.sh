@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuración
-PAQUETES=php5-gd
+PAQUETES="php5-gd subversion"
 
 URL_HOST=localhost
 URL_SUBDIR=www/observatorio
@@ -16,11 +16,11 @@ SPIP_VERSION=spip-3-stable
 SPIP_DB_USER=observatorio
 SPIP_DB_PW=observatorio
 SPIP_DB_HOST=localhost
-SPIP_DB_PORT=3306
+#SPIP_DB_PORT=3306
 SPIP_DB_NAME=observatorio
 
-if [ -f ./configuracion ] ; then
-        . ./configuracion
+if [ -f ./configuracion_spip ] ; then
+        . ./configuracion_spip
 fi
 
 URL=https://${URL_HOST}/${URL_SUBDIR}
@@ -43,7 +43,7 @@ sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "CREATE DATABASE ${SPIP_DB_
 sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "GRANT ALL PRIVILEGES ON ${SPIP_DB_NAME}.* TO '${SPIP_DB_USER}'@'${SPIP_DB_HOST}' IDENTIFIED BY '${SPIP_DB_PW}';"
 
 # Descarga de SPIP
-if [ ! -d ${SPIP_TMP_REPO} ]
+if [ ! -d ${SPIP_TMP_REPO}/.svn ]
 then
 	printf "Descarga de SPIP '%s' en la carpeta '%s'\n" "${SPIP_VERSION}" "${SPIP_TMP_REPO}"
 	svn checkout ${SPIP_REPO_SVN} ${SPIP_TMP_REPO}
@@ -57,7 +57,11 @@ rsync -r ${SPIP_TMP_REPO}/ ${CARPETA_INSTALACION}
 
 # Derechos
 sudo chgrp -R ${APACHE_GROUP} ${SPIP_CARPETAS_APACHE}
-sudo chmod -R g+sXw ${SPIP_CARPETAS_APACHE}
+sudo chmod -R g+rsXw ${SPIP_CARPETAS_APACHE}
+
+# Creación del archivo .htaccess
+mv ${CARPETA_INSTALACION}/htaccess.txt ${CARPETA_INSTALACION}/.htaccess
+sed -i "s|RewriteBase /|RewriteBase /${URL_SUBDIR}/|" ${CARPETA_INSTALACION}/.htaccess
 
 printf "Ingresar a %s para terminar la instalación\n" "${URL}/ecrire"
 printf " * usuario de la base de datos: %s\n" "${SPIP_DB_USER}"
