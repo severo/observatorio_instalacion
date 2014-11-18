@@ -1,38 +1,21 @@
 #!/bin/bash
 
-# Configuración
-PAQUETES="php5-gd git subversion"
-
-URL_HOST=localhost
-URL_SUBDIR=www/observatorio
-
-APACHE_USER=www-data
-APACHE_GROUP=www-data
-
-TMP=/tmp
-CARPETA_INSTALACION=/home/slesage/www/observatorio
-SPIP_VERSION=spip-3-stable
-
-SPIP_DB_USER=observatorio
-SPIP_DB_PW=observatorio
-SPIP_DB_HOST=localhost
-SPIP_DB_PORT=3306
-SPIP_DB_NAME=observatorio
-
-SPIP_PLUGIN_OBSERVATORIO_NOMBRE=observatorio
-SPIP_PLUGIN_OBSERVATORIO_REPO_GIT=git@gitlab.rednegra.net:severo/observatorio_plugin_spip.git
-
-if [ -f ./configuracion ] ; then
-        . ./configuracion
+# Cargar la configuración
+if [ -f ./configuracion.defecto.conf ] ; then
+        . ./configuracion.defecto.conf
 fi
 
+if [ -f ./configuracion.conf ] ; then
+        . ./configuracion.conf
+fi
+
+# Preparación de variables
 URL=https://${URL_HOST}/${URL_SUBDIR}
 SPIP_REPO_SVN=svn://trac.rezo.net/spip/branches/${SPIP_VERSION}
 SPIP_TMP_REPO=${TMP}/${SPIP_VERSION}
 SPIP_CARPETAS_APACHE="${CARPETA_INSTALACION}/config ${CARPETA_INSTALACION}/local ${CARPETA_INSTALACION}/tmp ${CARPETA_INSTALACION}/IMG"
 
 # Pre-requisitos
-
 printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
 sudo aptitude install ${PAQUETES}
 

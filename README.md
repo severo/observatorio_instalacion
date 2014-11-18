@@ -7,14 +7,14 @@ Scripts de instalación de SPIP / sitio del observatorio del racismo
 Primero preparar la configuración
 
 ```
-cp configuracion.ejemplo configuracion
-nano configuracion
+cp configuracion.defecto.conf configuracion.conf
+nano configuracion.conf
 ```
 
 y luego lanzar la instalación
 
 ```
-./instalacion.sh
+./instalar.sh
 ```
 
 Luego de la instalación, seguir los siguientes pasos manuales:
