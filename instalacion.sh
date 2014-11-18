@@ -1,63 +1,37 @@
 #!/bin/bash
 
 # Configuración
-PAQUETES=php5-gd
+PAQUETES="php5-gd git subversion"
 
 URL_HOST=localhost
-URL_SUBDIR=observatorio
+URL_SUBDIR=www/observatorio
 
 APACHE_USER=www-data
+APACHE_GROUP=www-data
 
 TMP=/tmp
-CARPETA_INSTALACION=/var/www/observatorio
-DR_VERSION=drupal-7.32
+CARPETA_INSTALACION=/home/slesage/www/observatorio
+SPIP_VERSION=spip-3-stable
 
-DR_DB_USER=observatorio
-DR_DB_PW=observatorio
-DR_DB_HOST=localhost
-DR_DB_PORT=3306
-DR_DB_NAME=observatorio
+SPIP_DB_USER=observatorio
+SPIP_DB_PW=observatorio
+SPIP_DB_HOST=localhost
+SPIP_DB_PORT=3306
+SPIP_DB_NAME=observatorio
 
-DR_ACCOUNT_NAME=severo
-DR_ACCOUNT_PASS=severo
-DR_ACCOUNT_MAIL=severo@rednegra.net
-DR_LOCALE=es_BO
-DR_SITE_MAIL=severo@rednegra.net
-DR_SITE_NAME="Observatorio del racismo"
+SPIP_PLUGIN_OBSERVATORIO_NOMBRE=observatorio
+SPIP_PLUGIN_OBSERVATORIO_REPO_GIT=git@gitlab.rednegra.net:severo/observatorio_plugin_spip.git
 
 if [ -f ./configuracion ] ; then
         . ./configuracion
 fi
 
-DR_DB_URL=mysql://${DR_DB_USER}:${DR_DB_PW}@${DR_DB_HOST}:${DR_DB_PORT}/${DR_DB_NAME}
-URL=http://${URL_HOST}/${URL_SUBDIR}
-DR_SITES_SUBDIR=${URL_HOST}.${URL_SUBDIR//\//.}
+URL=https://${URL_HOST}/${URL_SUBDIR}
+SPIP_REPO_SVN=svn://trac.rezo.net/spip/branches/${SPIP_VERSION}
+SPIP_TMP_REPO=${TMP}/${SPIP_VERSION}
+SPIP_CARPETAS_APACHE="${CARPETA_INSTALACION}/config ${CARPETA_INSTALACION}/local ${CARPETA_INSTALACION}/tmp ${CARPETA_INSTALACION}/IMG"
 
 # Pre-requisitos
-
-# Instalación de composer
-if $(command -v composer >/dev/null 2>&1)
-then
-  printf "Composer ya esta instalado\n"
-else
-  printf "Instalación de composer\n"
-  cd ~
-  curl -sS https://getcomposer.org/installer | php
-  sudo mv composer.phar /usr/local/bin/composer
-  sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' $HOME/.bashrc
-  source $HOME/.bashrc
-fi
-
-# Instalación de drush
-if $(command -v drush >/dev/null 2>&1)
-then
-  printf "Drush ya esta instalado\n"
-else
-  printf "Instalación de drush\n"
-  cd ~
-  composer global require drush/drush:6.*
-  curl -sS https://raw.githubusercontent.com/drush-ops/drush/master/drush.complete.sh | sudo tee /etc/bash_completion.d/drush.complete.sh > /dev/null
-fi
 
 printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
 sudo aptitude install ${PAQUETES}
@@ -66,34 +40,39 @@ sudo a2enmod rewrite
 sudo service apache2 restart
 
 # Vaciar la base de datos
-printf "Creación de la base de datos '%s' y del usuario '%s'\n" "${DR_DB_NAME}" "${DR_DB_USER}"
-sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "DROP DATABASE IF EXISTS ${DR_DB_NAME};"
-sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "CREATE DATABASE ${DR_DB_NAME};"
-sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "GRANT ALL PRIVILEGES ON ${DR_DB_NAME}.* TO '${DR_DB_USER}'@'${DR_DB_HOST}' IDENTIFIED BY '${DR_DB_PW}';"
+printf "Creación de la base de datos '%s' y del usuario '%s'\n" "${SPIP_DB_NAME}" "${SPIP_DB_USER}"
+sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "DROP DATABASE IF EXISTS ${SPIP_DB_NAME};"
+sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "CREATE DATABASE ${SPIP_DB_NAME};"
+sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "GRANT ALL PRIVILEGES ON ${SPIP_DB_NAME}.* TO '${SPIP_DB_USER}'@'${SPIP_DB_HOST}' IDENTIFIED BY '${SPIP_DB_PW}';"
 
-# Instalación
-printf "Instalación de Drupal '%s' en la carpeta '%s'\n" "${DR_VERSION}" "${CARPETA_INSTALACION}"
-cd ${TMP}
-sudo rm -rf ${TMP}/${DR_VERSION}
-drush dl ${DR_VERSION} --destination=${TMP}
-cd ${TMP}/${DR_VERSION}
-drush si standard \
-  --db-url=${DR_DB_URL} \
-  --account-name=${DR_ACCOUNT_NAME} \
-  --account-pass=${DR_ACCOUNT_PASS} \
-  --account-mail=${DR_ACCOUNT_MAIL} \
-  --locale=${DR_LOCALE} \
-  --site-mail=${DR_SITE_MAIL} \
-  --site-name=${DR_SITE_NAME} \
-  --sites-subdir=${DR_SITES_SUBDIR}
+# Descarga de SPIP
+if [ ! -d ${SPIP_TMP_REPO} ]
+then
+	printf "Descarga de SPIP '%s' en la carpeta '%s'\n" "${SPIP_VERSION}" "${SPIP_TMP_REPO}"
+	svn checkout ${SPIP_REPO_SVN} ${SPIP_TMP_REPO}
+fi
 
-sudo rm -rf ${CARPETA_INSTALACION}
-sudo mkdir ${CARPETA_INSTALACION}
-sudo chown -R ${APACHE_USER} ${CARPETA_INSTALACION}
-sudo -u ${APACHE_USER} rsync -r ${TMP}/${DR_VERSION}/ ${CARPETA_INSTALACION}
-sudo rm -rf ${TMP}/${DR_VERSION}
+# Instalación en la carpeta www
+printf "Instalación de SPIP '%s' en la carpeta '%s'\n" "${SPIP_VERSION}" "${CARPETA_INSTALACION}"
+rm -rf ${CARPETA_INSTALACION}
+mkdir -p ${CARPETA_INSTALACION}
+rsync -r ${SPIP_TMP_REPO}/ ${CARPETA_INSTALACION}
 
-printf "Sitio '%s' instalado en %s\n" "${DR_SITE_NAME}" "${URL}"
-printf " * usuario: %s\n" "${DR_ACCOUNT_NAME}"
-printf " * password: %s\n" "${DR_ACCOUNT_PASS}"
+# Derechos
+sudo chgrp -R ${APACHE_GROUP} ${SPIP_CARPETAS_APACHE}
+sudo chmod -R g+rsXw ${SPIP_CARPETAS_APACHE}
 
+# Creación del archivo .htaccess
+mv ${CARPETA_INSTALACION}/htaccess.txt ${CARPETA_INSTALACION}/.htaccess
+sed -i "s|RewriteBase /|RewriteBase /${URL_SUBDIR}/|" ${CARPETA_INSTALACION}/.htaccess
+
+# Instalación del plugin observatorio
+mkdir -p ${CARPETA_INSTALACION}/plugins/auto
+sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}/plugins/auto
+sudo chmod -R g+sXw ${CARPETA_INSTALACION}/plugins/auto
+
+git clone ${SPIP_PLUGIN_OBSERVATORIO_REPO_GIT} ${CARPETA_INSTALACION}/plugins/${SPIP_PLUGIN_OBSERVATORIO_NOMBRE}
+
+printf "Ingresar a %s para terminar la instalación\n" "${URL}/ecrire"
+printf " * usuario de la base de datos: %s\n" "${SPIP_DB_USER}"
+printf " * password de la base de datos: %s\n" "${SPIP_DB_PW}"
