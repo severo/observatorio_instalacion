@@ -55,6 +55,7 @@ sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}/plugins/auto
 sudo chmod -R g+sXw ${CARPETA_INSTALACION}/plugins/auto
 
 git clone ${SPIP_PLUGIN_OBSERVATORIO_REPO_GIT} ${CARPETA_INSTALACION}/plugins/${SPIP_PLUGIN_OBSERVATORIO_NOMBRE}
+git clone ${SPIP_PLUGIN_OBSERVATORIO_ESQ_REPO_GIT} ${CARPETA_INSTALACION}/plugins/${SPIP_PLUGIN_OBSERVATORIO_ESQ_NOMBRE}
 
 printf "Ingresar a %s para terminar la instalación\n" "${URL}/ecrire"
 printf " * usuario de la base de datos: %s\n" "${SPIP_DB_USER}"

@@ -23,3 +23,8 @@ cd ${CARPETA_INSTALACION}/plugins/${SPIP_PLUGIN_OBSERVATORIO_NOMBRE}
 git fetch -p
 git merge origin master
 
+printf "Actualización del plugin %s en %s\n" "${SPIP_PLUGIN_OBSERVATORIO_ESQ_NOMBRE}" "${CARPETA_INSTALACION}/plugins/${SPIP_PLUGIN_OBSERVATORIO_ESQ_NOMBRE}"
+cd ${CARPETA_INSTALACION}/plugins/${SPIP_PLUGIN_OBSERVATORIO_ESQ_NOMBRE}
+git fetch -p
+git merge origin master
+
