@@ -37,13 +37,14 @@ fi
 
 # Instalación en la carpeta www
 printf "Instalación de SPIP '%s' en la carpeta '%s'\n" "${SPIP_VERSION}" "${CARPETA_INSTALACION}"
-rm -rf ${CARPETA_INSTALACION}
-mkdir -p ${CARPETA_INSTALACION}
-rsync -r ${SPIP_TMP_REPO}/ ${CARPETA_INSTALACION}
+sudo rm -rf ${CARPETA_INSTALACION}
+sudo mkdir -p ${CARPETA_INSTALACION}
 
 # Derechos
-sudo chgrp -R ${APACHE_GROUP} ${SPIP_CARPETAS_APACHE}
-sudo chmod -R g+rsXw ${SPIP_CARPETAS_APACHE}
+sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}
+sudo chmod -R g+rsXw ${CARPETA_INSTALACION}
+
+rsync -r ${SPIP_TMP_REPO}/ ${CARPETA_INSTALACION}
 
 # Creación del archivo .htaccess
 mv ${CARPETA_INSTALACION}/htaccess.txt ${CARPETA_INSTALACION}/.htaccess
