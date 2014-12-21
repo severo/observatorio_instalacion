@@ -10,7 +10,7 @@ if [ -f ./configuracion.conf ] ; then
 fi
 
 # Preparación de variables
-URL=https://${URL_HOST}/${URL_SUBDIR}
+URL=https://${URL_HOST}${URL_SUBDIR}
 SPIP_REPO_SVN=svn://trac.rezo.net/spip/branches/${SPIP_VERSION}
 SPIP_TMP_REPO=${TMP}/${SPIP_VERSION}
 SPIP_CARPETAS_APACHE="${CARPETA_INSTALACION}/config ${CARPETA_INSTALACION}/local ${CARPETA_INSTALACION}/tmp ${CARPETA_INSTALACION}/IMG"
@@ -47,7 +47,7 @@ sudo chmod -R g+rsXw ${SPIP_CARPETAS_APACHE}
 
 # Creación del archivo .htaccess
 mv ${CARPETA_INSTALACION}/htaccess.txt ${CARPETA_INSTALACION}/.htaccess
-sed -i "s|RewriteBase /|RewriteBase /${URL_SUBDIR}/|" ${CARPETA_INSTALACION}/.htaccess
+sed -i "s|RewriteBase /|RewriteBase ${URL_SUBDIR}|" ${CARPETA_INSTALACION}/.htaccess
 
 # Instalación del plugin observatorio
 mkdir -p ${CARPETA_INSTALACION}/plugins/auto
