@@ -65,3 +65,18 @@ Para trabajar de manera limpia con el sitio local de desarrollo:
 Para un sitio de test, lo mismo.
 
 Una vez testeado, solo lanzar la actualización en el sitio de producción.
+
+## Supresión del sitio
+
+Primero preparar la configuración
+
+```
+cp configuracion.defecto.conf configuracion.conf
+nano configuracion.conf
+```
+
+y luego lanzar la desinstalación / supresión
+
+```
+./desinstalar.sh
+```
