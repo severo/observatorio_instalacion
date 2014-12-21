@@ -10,7 +10,7 @@ if [ -f ./configuracion.conf ] ; then
 fi
 
 # Preparación de variables
-URL=https://${URL_HOST}/${URL_SUBDIR}
+URL=https://${URL_HOST}${URL_SUBDIR}
 SPIP_CARPETAS_APACHE="${CARPETA_INSTALACION}/config ${CARPETA_INSTALACION}/local ${CARPETA_INSTALACION}/tmp ${CARPETA_INSTALACION}/IMG"
 
 # Actualización de SPIP
