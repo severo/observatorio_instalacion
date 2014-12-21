@@ -51,3 +51,6 @@ printf "Importación del dump en local\n"
 sudo mysql --defaults-file=/etc/mysql/debian.cnf ${SPIP_DB_NAME} < ${DUMP_LOCAL}
 printf "Modificación de la URL del sitio en la base de datos\n"
 sudo mysql --defaults-file=/etc/mysql/debian.cnf -se "UPDATE spip_meta SET valeur='${URL}' WHERE nom='adresse_site'" ${SPIP_DB_NAME}
+
+# 3. Limpiar los archivos temporales que pueden estar en desfaz con el código
+sudo rm -rf ${CARPETA_INSTALACION}/tmp/* ${CARPETA_INSTALACION}/local/*
