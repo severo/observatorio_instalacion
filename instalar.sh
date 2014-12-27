@@ -46,6 +46,9 @@ sudo chmod -R g+rsXw ${CARPETA_INSTALACION}
 
 rsync -r ${SPIP_TMP_REPO}/ ${CARPETA_INSTALACION}
 
+# Supresión de los CSS de squelettes-dist
+svn rm ${CARPETA_INSTALACION}/squelettes-dist/css
+
 # Creación del archivo .htaccess
 mv ${CARPETA_INSTALACION}/htaccess.txt ${CARPETA_INSTALACION}/.htaccess
 sed -i "s|RewriteBase /|RewriteBase ${URL_SUBDIR}|" ${CARPETA_INSTALACION}/.htaccess
