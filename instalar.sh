@@ -50,6 +50,11 @@ rsync -r ${SPIP_TMP_REPO}/ ${CARPETA_INSTALACION}
 mv ${CARPETA_INSTALACION}/htaccess.txt ${CARPETA_INSTALACION}/.htaccess
 sed -i "s|RewriteBase /|RewriteBase ${URL_SUBDIR}|" ${CARPETA_INSTALACION}/.htaccess
 
+# Preparación de la carpeta de librerías
+mkdir -p ${CARPETA_INSTALACION}/lib/
+sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}/lib/
+sudo chmod -R g+sXw ${CARPETA_INSTALACION}/lib/
+
 # Instalación del plugin observatorio
 mkdir -p ${CARPETA_INSTALACION}/plugins/auto
 sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}/plugins/auto

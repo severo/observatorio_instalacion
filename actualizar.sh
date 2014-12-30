@@ -13,8 +13,25 @@ fi
 URL=https://${URL_HOST}${URL_SUBDIR}
 SPIP_CARPETAS_APACHE="${CARPETA_INSTALACION}/config ${CARPETA_INSTALACION}/local ${CARPETA_INSTALACION}/tmp ${CARPETA_INSTALACION}/IMG"
 
+# Nos aseguramos que las carpetas necesarias existen
+
+# Derechos
+sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}
+sudo chmod -R g+rsXw ${CARPETA_INSTALACION}
+
+# Preparación de la carpeta de librerías
+mkdir -p ${CARPETA_INSTALACION}/lib/
+sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}/lib/
+sudo chmod -R g+sXw ${CARPETA_INSTALACION}/lib/
+
+# Instalación del plugin observatorio
+mkdir -p ${CARPETA_INSTALACION}/plugins/auto
+sudo chgrp -R ${APACHE_GROUP} ${CARPETA_INSTALACION}/plugins/auto
+sudo chmod -R g+sXw ${CARPETA_INSTALACION}/plugins/auto
+
 # Actualización de SPIP
 printf "Actualización de SPIP"
+svn cleanup ${CARPETA_INSTALACION}
 svn update ${CARPETA_INSTALACION}
 
 # Actualización del plugin observatorio
