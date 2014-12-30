@@ -13,6 +13,13 @@ fi
 URL=https://${URL_HOST}${URL_SUBDIR}
 SPIP_CARPETAS_APACHE="${CARPETA_INSTALACION}/config ${CARPETA_INSTALACION}/local ${CARPETA_INSTALACION}/tmp ${CARPETA_INSTALACION}/IMG"
 
+# Pre-requisitos
+printf "Instalación de los paquetes: %s\n" "${PAQUETES}"
+sudo aptitude install ${PAQUETES}
+
+sudo a2enmod rewrite
+sudo service apache2 restart
+
 # Nos aseguramos que las carpetas necesarias existen
 
 # Derechos
